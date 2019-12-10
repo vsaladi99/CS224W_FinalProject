@@ -1,10 +1,30 @@
+print("Fuck you")
 from scipy.io import mmread 
 import numpy as np
+print("I got fucked")
 import snap 
+print("eee")
 import random
+
 # from sklearn.preprocessing import normalize
 # import graphviz 
 
+def getMinAvgMax(graph):
+	nodes = graph.GetNodes()
+	edges = graph.GetEdges()
+	InDegV = snap.TIntPrV()
+	snap.GetNodeInDegV(graph, InDegV)
+	sum_deg = 0
+	max_deg = 0
+	min_deg = 10000
+	for item in InDegV:
+		cur_deg = item.GetVal2()
+		sum_deg += cur_deg
+		min_deg = min(min_deg, cur_deg)
+		max_deg = max(max_deg, cur_deg)
+	avg_deg = sum_deg/nodes
+
+	return (max_deg, min_deg, avg_deg)
 
 def makeEdgeListFromA(A, name):
 	with open(name, "w+") as file:
@@ -13,10 +33,44 @@ def makeEdgeListFromA(A, name):
 				if A[r][c] == True:
 					file.write(str(r) + " " + str(c) + "\n")
 
-graph = snap.LoadEdgeList(snap.PUNGraph, "bio-SC-TS/bio-SC-TS.txt", 0, 1, ' ')
+# graph = snap.LoadEdgeList(snap.PUNGraph, "bio-SC-TS/bio-SC-TS.txt", 0, 1, ' ')
 
-print("Nodes of loaded graph: ", graph.GetNodes())
-print("Edges of loaded graph: ", graph.GetEdges())
+# print("Nodes of loaded graph: ", graph.GetNodes())
+# print("Edges of loaded graph: ", graph.GetEdges())
+
+
+target_graph = 'ENZYMES_g123'
+print(target_graph)
+G = snap.LoadEdgeList(snap.PUNGraph, "Archive/"+target_graph + "/" + target_graph + ".txt", 0, 1, ' ')
+print("Loaded {} with {} nodes".format(target_graph, G.GetNodes()))
+max_deg, min_deg, avg_deg = getMinAvgMax(G)
+clus_coef = snap.GetClustCf(G, -1)
+diam = snap.GetBfsFullDiam(G, 10, False)
+
+print(" Nodes: ", G.GetNodes())
+print(" Edges: ", G.GetEdges())
+print(" Maximum Degree: ", max_deg)
+print(" Minimum Degree: ", min_deg)
+print(" Clustering Coefficient: ", clus_coef)
+print(" Average degree: ", avg_deg)
+print("Diameter: ", diam)
+
+
+generated = snap.LoadEdgeList(snap.PUNGraph, "Archive/attempt0.txt", 0, 1, '\t')
+print("Loaded {} with {} nodes".format("Generated graph", generated.GetNodes()))
+max_gen_deg, min_gen_deg, avg_gen_deg = getMinAvgMax(generated)
+clus_gen_coef = snap.GetClustCf(generated, -1)
+diam_gen = snap.GetBfsFullDiam(generated, 100, False)
+
+print("Generated Nodes: ", generated.GetNodes())
+print("Generated Edges: ", generated.GetEdges())
+print("Generated Maximum Degree: ", max_gen_deg)
+print("Generated Minimum Degree: ", min_gen_deg)
+print("Generated Clustering Coefficient: ", clus_gen_coef)
+print("Generated Average degree: ", avg_gen_deg)
+print("Generated Diameter: ", diam_gen)
+
+
 
 
 
