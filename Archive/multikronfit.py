@@ -159,41 +159,44 @@ if __name__ == '__main__':
 
   kernel_sizes = [2, 3, 3, 5]
 
-  print('Finding the optimal kernels')
-  optimized_kernels = optimize(G, kernel_sizes)
-  final_graph = construct_graph(optimized_kernels)
+  count = 0
+  while count < 100:
+    print('Finding the optimal kernels')
+    optimized_kernels = optimize(G, kernel_sizes)
+    final_graph = construct_graph(optimized_kernels)
 
-  print(final_graph)
-  print("max : ", np.max(final_graph))
-  print("min: ",np.min(final_graph))
+    print(final_graph)
+    print("max : ", np.max(final_graph))
+    print("min: ",np.min(final_graph))
 
-  norm = np.linalg.norm(final_graph)
-  final_graph /= np.max(final_graph)
-  
-  generated = snap.TUNGraph.New()
-  for i in range(len(final_graph)):
-    generated.AddNode(i)
+    norm = np.linalg.norm(final_graph)
+    final_graph /= np.max(final_graph)
+    
+    generated = snap.TUNGraph.New()
+    for i in range(len(final_graph)):
+      generated.AddNode(i)
 
-  # for i in range(len(final_graph)):
-  #   for j in range(i, len(final_graph)):
-  #     # rand = random.uniform(0, np.max(final_graph))
-  #     rand = random.random()
-  #     if final_graph[i][j] < rand:
-  #       generated.AddEdge(i, j)
+    # for i in range(len(final_graph)):
+    #   for j in range(i, len(final_graph)):
+    #     # rand = random.uniform(0, np.max(final_graph))
+    #     rand = random.random()
+    #     if final_graph[i][j] < rand:
+    #       generated.AddEdge(i, j)
 
-  edges = 0
-  while edges < G.GetEdges():
-    a = random.randint(0, G.GetNodes()-1)
-    b = random.randint(0, G.GetNodes()-1)
-    if a != b:
-      rand = random.random()
-      if final_graph[a][b] < rand:
-        generated.AddEdge(a, b)
+    edges = 0
+    while edges < G.GetEdges():
+      a = random.randint(0, G.GetNodes()-1)
+      b = random.randint(0, G.GetNodes()-1)
+      if a != b:
+        rand = random.random()
+        if final_graph[a][b] < rand:
+          generated.AddEdge(a, b)
 
-  snap.DrawGViz(generated, snap.gvlNeato, "fuckthisbullshit4.png", "fuck", False)
-  # snap.DrawGViz(G, snap.gvlNeato, "target.png", "target", False)
-  print("Target Graph Edges: ", G.GetEdges())
-  print("Generated Graph Edges: ", generated.GetEdges())
+    snap.DrawGViz(generated, snap.gvlNeato, "attempt" + str(count) + ".png", "fuck", False)
+    # snap.DrawGViz(G, snap.gvlNeato, "target.png", "target", False)
+    print("Target Graph Edges: ", G.GetEdges())
+    print("Generated Graph Edges: ", generated.GetEdges())
+    snap.SaveEdgeList(generated,  "attempt" + str(count) + '.txt')
 
 
 
