@@ -56,7 +56,7 @@ print(" Average degree: ", avg_deg)
 print("Diameter: ", diam)
 
 
-generated = snap.LoadEdgeList(snap.PUNGraph, "Archive/attempt0.txt", 0, 1, '\t')
+generated = snap.LoadEdgeList(snap.PUNGraph, "Archive/attempt5.txt", 0, 1, '\t')
 print("Loaded {} with {} nodes".format("Generated graph", generated.GetNodes()))
 max_gen_deg, min_gen_deg, avg_gen_deg = getMinAvgMax(generated)
 clus_gen_coef = snap.GetClustCf(generated, -1)
