@@ -161,6 +161,7 @@ if __name__ == '__main__':
 
   count = 0
   while count < 100:
+    print("Count: ", count)
     print('Finding the optimal kernels')
     optimized_kernels = optimize(G, kernel_sizes)
     final_graph = construct_graph(optimized_kernels)
