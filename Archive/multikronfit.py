@@ -192,6 +192,7 @@ if __name__ == '__main__':
         rand = random.random()
         if final_graph[a][b] < rand:
           generated.AddEdge(a, b)
+          edges +=1
 
     snap.DrawGViz(generated, snap.gvlNeato, "attempt" + str(count) + ".png", "fuck", False)
     # snap.DrawGViz(G, snap.gvlNeato, "target.png", "target", False)
